@@ -1,0 +1,8 @@
+# Ignore build directory
+build
+.vscode
+
+# Ignore build objects and artifacts
+*.o
+*.a
+*.exe
