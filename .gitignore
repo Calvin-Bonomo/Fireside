@@ -1,5 +1,5 @@
 // Ignore IDE specific directories
-.vscode
+.vscode/
 
 // Ignore build files
 *.o
@@ -7,3 +7,4 @@
 *.so
 fireside_lib
 test_fireside_lib
+include/
