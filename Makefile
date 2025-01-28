@@ -3,26 +3,26 @@ C := gcc
 SRC_DIR := src
 CFLAGS := -Wall -Ofast
 TEST_DIR := test
-LIB := fireside_lib.so
+LIB := libfireside
 TESTS := test_fireside_lib
 
-all: $(LIB)
+all: $(LIB).so
 test: $(TESTS)
 
 # Including sub makefiles
 include $(SRC_DIR)/Makefile $(TEST_DIR)/Makefile
-INCLUDE_DIRS := $(addprefix -I,$(INCLUDE_DIRS))
+ARG_INCLUDE_DIRS := $(addprefix -I$(SRC_DIR)/,$(INCLUDE_DIRS))
 TEST_INCLUDE_DIRS := $(addprefix -I,$(TEST_INCLUDE_DIRS))
 
 # Build the shared library
-$(LIB): $(LIB_OBJECTS)
-	$(C) -shared $(CFLAGS) -o $@ $? $(INCLUDE_DIRS)
+$(LIB).so: $(LIB_OBJECTS)
+	$(C) -shared $(CFLAGS) $? -o $@ $(ARG_INCLUDE_DIRS)
 
 # Build tests
-$(TESTS): $(TEST_OBJECTS) $(LIB)
-	$(C) $(TEST_CFLAGS) -o $@ $? $(TEST_INCLUDE_DIRS)
+$(TESTS): $(LIB).so $(TEST_OBJECTS)
+	$(C) -pie -Wl,-rpath=. $(TEST_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside -Iinclude/ $(TEST_INCLUDE_DIRS)
 
 # Clean up
 .PHONY: clean
 clean:
-	rm -rf *.o $(LIB) $(TESTS)
+	rm -rf *.o *.so $(TESTS) ./include/*
