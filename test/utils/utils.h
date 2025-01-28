@@ -7,8 +7,7 @@
 printf("Starting tests in group: %s.\n", group_name);
 
 #define END_TEST(group_name) \
-printf("Tests in group, %s, complete.\n%s:    %d tests passed, %d tests failed\n", group_name, group_name, testsPassed, testsFailed); \
-return (((unsigned long)testsPassed) << 32) | testsFailed;
+printf("Tests in group, %s, complete.\n%s:    %d tests passed, %d tests failed\n", group_name, group_name, testsPassed, testsFailed);
 
 #define TEST_EQ(test_name, res, expected) \
 if (res == expected) { \
