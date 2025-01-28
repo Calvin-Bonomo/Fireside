@@ -1,16 +1,33 @@
 #ifndef UTILS
 #define UTILS
 
-typedef struct {
-  char *testGroupName;
-  unsigned char testNameSize;
-  unsigned int numTestsPassed;
-  unsigned int numTestsFailed;
-} test_data_t;
+#include "stdio.h"
 
-typedef int test_runner(test_data_t *data);
+#define BEGIN_TEST(group_name) unsigned int testsPassed = 0, testsFailed = 0; \
+printf("Starting tests in group: %s.\n", group_name);
 
-int init_test_data(test_data_t *data, char* testGroupName, int nameSize);
-int free_test_data(test_data_t *data);
+#define END_TEST(group_name) \
+printf("Tests in group, %s, complete.\n%s:    %d tests passed, %d tests failed\n", group_name, group_name, testsPassed, testsFailed); \
+return (((unsigned long)testsPassed) << 32) | testsFailed;
+
+#define TEST_EQ(test_name, res, expected) \
+if (res == expected) { \
+  testsPassed++; \
+  printf("Passed test %s.\n", test_name); \
+} \
+else { \
+  testsPassed++; \
+  printf("Failed test %s.\n", test_name); \
+}
+
+#define TEST_NEQ(test_name, res, expected) \
+if (res != expected) { \
+  testsPassed++; \
+  printf("Passed test %s.\n", test_name); \
+} \
+else { \
+  testsPassed++; \
+  printf("Failed test %s.\n", test_name); \
+} \
 
 #endif
