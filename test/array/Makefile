@@ -4,4 +4,4 @@ TEST_OBJECTS += $(ARRAY_TEST_OBJECT)
 
 # Array test target
 $(ARRAY_TEST_OBJECT):
-	$(C) -c $(ARRAY_TEST_INCLUDE)/test_array.c -Itest/utils -Iinclude/ -l$(LIB)
+	$(C) -c $(ARRAY_TEST_INCLUDE)/test_array.c $(TEST_INCLUDE_DIRS)

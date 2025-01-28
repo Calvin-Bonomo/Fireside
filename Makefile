@@ -5,6 +5,7 @@ CFLAGS := -Wall -Ofast
 TEST_DIR := test
 LIB := libfireside
 TESTS := test_fireside_lib
+TEST_INCLUDE_DIRS := include
 
 all: $(LIB).so
 test: $(TESTS)
