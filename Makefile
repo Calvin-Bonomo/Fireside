@@ -7,6 +7,7 @@ LIB := libfireside
 TESTS := test_fireside_lib
 TEST_INCLUDE_DIRS := include
 
+.PHONY: $(LIB).so $(TESTS) $(TEST_OBJECTS) clean
 all: $(LIB).so
 test: $(TESTS)
 
@@ -22,8 +23,8 @@ $(LIB).so: $(LIB_OBJECTS)
 # Build tests
 $(TESTS): $(LIB).so $(TEST_OBJECTS)
 	$(C) -pie -Wl,-rpath=. $(TEST_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside -Iinclude/ $(TEST_INCLUDE_DIRS)
+	./$(TESTS)
 
 # Clean up
-.PHONY: clean
 clean:
 	rm -rf *.o *.so $(TESTS) ./include/*

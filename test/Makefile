@@ -2,11 +2,6 @@
 TEST_RUNNER := test_runner.o
 TEST_OBJECTS += $(TEST_RUNNER)
 
-# Test utilities related variables
-UTILS_INCLUDE := $(TEST_DIR)/utils
-TEST_INCLUDE_DIRS += $(UTILS_INCLUDE)
-TEST_SUB_MAKES += $(UTILS_INCLUDE)/Makefile
-
 # Array test related variables
 ARRAY_DIR := array
 ARRAY_TEST_INCLUDE := $(TEST_DIR)/$(ARRAY_DIR)
