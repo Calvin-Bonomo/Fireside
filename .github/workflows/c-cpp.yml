@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: include_dir
+      run: mkdir include
     - name: make
       run: make
     - name: make test
