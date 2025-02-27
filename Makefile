@@ -22,6 +22,7 @@ $(LIB).so: $(LIB_OBJECTS)
 
 # Build tests
 $(TESTS): $(LIB).so $(TEST_OBJECTS)
+	mkdir -p include
 	$(C) -pie -Wl,-rpath=. $(TEST_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside -Iinclude/ $(TEST_INCLUDE_DIRS)
 	./$(TESTS)
 
