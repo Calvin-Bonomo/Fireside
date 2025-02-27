@@ -1,13 +1,13 @@
 # Building and environment related variables
 C := gcc
 SRC_DIR := src
-CFLAGS := -Wall -Ofast
+CFLAGS := -Wall -Werror -Ofast
 TEST_DIR := test
 LIB := libfireside
 TESTS := test_fireside_lib
 TEST_INCLUDE_DIRS := include
 
-.PHONY: $(LIB).so $(TESTS) $(TEST_OBJECTS) clean
+.PHONY: $(LIB).so $(LIB_OBJECTS) $(TESTS) $(TEST_OBJECTS) clean
 all: $(LIB).so
 test: $(TESTS)
 
