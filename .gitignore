@@ -8,3 +8,7 @@
 fireside_lib
 test_fireside_lib
 include/
+template/
+
+// Ignore scripts
+*.sh
