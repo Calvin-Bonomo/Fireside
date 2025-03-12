@@ -80,6 +80,15 @@ int list_remove(List *list, int index)
   return 0;
 }
 
+void *list_get(List *list, int index) {
+  if (!list || index < 0 || index >= list->length) return NULL;
+
+  ListNode *current = list->head;
+  while (current->index != index) current = current->next;
+
+  return current->data;
+}
+
 ListNode *_list_get_last(ListNode *node) {
   if (!node) return NULL;
 

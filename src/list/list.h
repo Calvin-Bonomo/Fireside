@@ -22,6 +22,8 @@ int list_free(List *list);
 int list_add(List *list, void *data, size_t size);
 int list_remove(List *list, int index);
 
+void *list_get(List *list, int index);
+
 ListNode *_list_get_last(ListNode *node);
 
 #endif

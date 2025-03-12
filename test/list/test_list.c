@@ -5,6 +5,7 @@ void test_list() {
   test_list_free();
   test_list_add();
   test_list_remove();
+  test_list_get();
 }
 
 void test_list_init() {
@@ -60,6 +61,29 @@ void test_list_remove() {
   assert(!list_remove(&list, 1));
   assert(!list_remove(&list, 0));
   assert(!list.length);
+  assert(list_remove(&list, 12) < 0);
+
+  if (list_free(&list) < 0) exit(1);
+}
+
+void test_list_get() {
+  List list;
+  int val[3] = {1, 2, 3};
+  if (list_init(&list, sizeof(int)) < 0) exit(1);
+
+  // Invalid tests
+  assert(!list_get(&list, 12));
+
+  if (list_add(&list, &val[0], sizeof(int)) < 0) exit(1);
+  if (list_add(&list, &val[1], sizeof(int)) < 0) exit(1);
+  if (list_add(&list, &val[2], sizeof(int)) < 0) exit(1);
+
+  assert(!list_get(NULL, 0));
+  assert(!list_get(&list, -1));
+  assert(!list_get(&list, 3));
+  for (int i = 0; i < 3; i++) {
+    assert(*((int *)list_get(&list, i)) == val[i]);
+  }
 
   if (list_free(&list) < 0) exit(1);
 }
