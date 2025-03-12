@@ -10,5 +10,10 @@ LIST_INCLUDE := $(SRC_DIR)/$(LIST_DIR)
 INCLUDE_DIRS += $(LIST_DIR)
 LIB_SUB_MAKES += $(LIST_INCLUDE)/Makefile
 
+HEAP_DIR := heap
+HEAP_INCLUDE := $(SRC_DIR)/$(HEAP_DIR)
+INCLUDE_DIRS += $(HEAP_DIR)
+LIB_SUB_MAKES += $(HEAP_INCLUDE)/Makefile
+
 # Include all extra Makefiles
 include $(LIB_SUB_MAKES)
