@@ -10,4 +10,9 @@ void test_list();
 void test_list_init();
 void test_list_free();
 
+void test_list_add();
+void test_list_remove();
+
+void check_node(ListNode *node, int expectedIndex, int expectedData);
+
 #endif
