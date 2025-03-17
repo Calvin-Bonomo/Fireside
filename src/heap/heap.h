@@ -2,12 +2,16 @@
 #define HEAP
 
 #include "stdlib.h"
+#include "utils.h"
+
+typedef int (*compareFunc)(void *left, void *right);
 
 typedef struct {
   void *data;
   unsigned long dataSize;
   unsigned int count;
   unsigned int maxCount;
+  compareFunc compare;
 } Heap;
 
 int heap_init(Heap *heap, unsigned long dataSize, unsigned int initialHeapSize);

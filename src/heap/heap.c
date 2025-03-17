@@ -24,18 +24,27 @@ int heap_add(Heap *heap, void *data, unsigned long dataSize) {
     if (heap->maxCount > 2 * heap->maxCount) return -1; // Unsigned overflow
 
     void *newData = malloc(2 * heap->maxCount);
-    if (!newData) return -1;
-
-    char *dst = newData, *src = heap->data;
-    for (unsigned int i = 0; i < heap->count * heap->dataSize; i++) dst[i] = src[i];
+    if (!newData || !copy(heap->data, newData, dataSize * heap->maxCount)) return -1;
     
     free(heap->data);
     heap->maxCount *= 2;
     heap->data = newData;
   }
 
-  unsigned int dataIndex = heap->count++;
+  uint dataIndex = heap->count++, parentIndex;
+  void *parent, *child;
+  if (!copy(data, heap + dataIndex * dataSize, dataSize)) return -1;
 
+  while (dataIndex) {
+    parentIndex = (dataIndex - (dataIndex % 2)) / 2;
+    parent = heap->data + parentIndex * dataSize;
+    child = heap->data + dataIndex * dataSize;
+    
+    if (!heap->compare(parent, child)) break;
+
+    if (!swap(parent, child, dataSize)) return -1;
+    dataIndex = parentIndex;
+  }
 
   return 0;
 }
