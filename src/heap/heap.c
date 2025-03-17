@@ -51,4 +51,8 @@ int heap_add(Heap *heap, void *data, unsigned long dataSize) {
 
 int heap_get_max(Heap *heap) {
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d069676b0661b92d09ac47274b3ac36799796a5d
