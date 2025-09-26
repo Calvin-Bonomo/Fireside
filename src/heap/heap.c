@@ -1,12 +1,13 @@
 #include "heap.h"
+#include "utils.h"
 
-int heap_init(Heap *heap, unsigned long dataSize, unsigned int initialHeapSize) {
-  if (!heap || !dataSize || !initialHeapSize) return -1;
+int heap_init(Heap *heap, ulong count, heapCompareFunc compare) {
+  if (!heap || !count || !compare) return -1;
 
-  if (!(heap->data = malloc(dataSize * initialHeapSize))) return -1;
+  if (!(heap->data = malloc(sizeof(void *) * count))) return -1;
   heap->count = 0;
-  heap->maxCount = initialHeapSize;
-  heap->dataSize = dataSize;
+  heap->maxCount = count;
+  heap->compare = compare;
 
   return 0;
 }
@@ -14,45 +15,67 @@ int heap_init(Heap *heap, unsigned long dataSize, unsigned int initialHeapSize) 
 int heap_free(Heap *heap) {
   if (!heap) return -1;
   free(heap->data);
+  if (!clear(heap, sizeof(Heap *))) return -1;
 
   return 0;
 }
 
-int heap_add(Heap *heap, void *data, unsigned long dataSize) {
-  if (!heap || !data || dataSize != heap->dataSize) return -1;
-  if (heap->count == heap->maxCount) { // Reallocate array
-    if (heap->maxCount > 2 * heap->maxCount) return -1; // Unsigned overflow
+int heap_push(Heap *heap, void *data) {
+  if (!heap || !data) return -1;
+  if (heap->count == heap->maxCount) { // Reallocate array for size-up
+    if (heap->maxCount > 2 * heap->maxCount) return -1; // Unsigned overflow (heap is too big)
 
     void *newData = malloc(2 * heap->maxCount);
-    if (!newData || !copy(heap->data, newData, dataSize * heap->maxCount)) return -1;
+    if (!newData) return -1;
+    if (!copy(heap->data, newData, sizeof(void *) * heap->maxCount)) {
+      free(newData);
+      return -1;
+    }
     
     free(heap->data);
     heap->maxCount *= 2;
     heap->data = newData;
   }
 
-  uint dataIndex = heap->count++, parentIndex;
-  void *parent, *child;
-  if (!copy(data, heap + dataIndex * dataSize, dataSize)) return -1;
+  uint index = heap->count++;
+  uint parentIndex = (index - 1) / 2;
+  if (parentIndex >= index) return 0; // Heap was previously empty
 
-  while (dataIndex) {
-    parentIndex = (dataIndex - (dataIndex % 2)) / 2;
-    parent = heap->data + parentIndex * dataSize;
-    child = heap->data + dataIndex * dataSize;
-    
-    if (!heap->compare(parent, child)) break;
-
-    if (!swap(parent, child, dataSize)) return -1;
-    dataIndex = parentIndex;
+  // Swap child and parent nodes until condition satisfied
+  while (heap->compare(heap->data + index, heap->data + parentIndex) > 0) {
+    if (!swap(heap->data + index, heap->data + parentIndex, sizeof(void *))) return -1;
+    index = parentIndex;
+    parentIndex = (index - 1) / 2;
   }
 
   return 0;
 }
 
-int heap_get_max(Heap *heap) {
+void *heap_pop(Heap *heap) {
+  if (!heap || !heap->count) return NULL;
+  void *oldRoot = NULL,
+       *lastNode = heap->data + heap->count - 1;
+  uint currentIndex = 0,
+       replacementIndex = 0;
 
-<<<<<<< HEAD
+  if (!copy(heap->data, oldRoot, sizeof(void *))) return NULL;
+  if (!copy(lastNode, heap->data, sizeof(void *))) return NULL;
+  if (!clear(heap->data + (--heap->count), sizeof(void *))) return NULL;
+
+  while (currentIndex < heap->count) {
+    if (heap->compare(heap->data + currentIndex, heap->data + currentIndex * 2 + 1)) replacementIndex = currentIndex * 2 + 1;
+    if (heap->compare(heap->data + currentIndex, heap->data + currentIndex * 2 + 2)) replacementIndex = currentIndex * 2 + 1;
+
+    if (currentIndex == replacementIndex) break;
+    if (!copy(heap->data + currentIndex, heap->data + replacementIndex, sizeof(void *))) return NULL;
+
+    currentIndex = replacementIndex;
+  }
+
+  return oldRoot;
 }
-=======
+
+void *heap_peek(Heap *heap) {
+  if (!heap || !heap->count) return NULL;
+  return heap->data;
 }
->>>>>>> d069676b0661b92d09ac47274b3ac36799796a5d
