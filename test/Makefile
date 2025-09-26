@@ -22,7 +22,7 @@ TEST_SUB_MAKES += $(HEAP_TEST_INCLUDE)/Makefile
 
 # Test runner target
 $(TEST_RUNNER):
-	$(C) $(TEST_CFLAGS) -c $(TEST_DIR)/test_runner.c $(TEST_INCLUDE_DIRS)
+	$(C) $(TEST_CFLAGS) -c $(TEST_DIR)/test_runner.c $(TEST_INCLUDE_DIRS) $(PRIVATE_INCLUDE_DIRS)
 
 # Include extra Makefiles
 include $(TEST_SUB_MAKES)

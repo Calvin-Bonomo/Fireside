@@ -4,4 +4,4 @@ TEST_OBJECTS += $(HEAP_TEST_OBJECT)
 
 # heap test target
 $(HEAP_TEST_OBJECT):
-	$(C) -c $(HEAP_TEST_INCLUDE)/test_heap.c $(TEST_INCLUDE_DIRS)
+	$(C) -c $(HEAP_TEST_INCLUDE)/test_heap.c $(TEST_INCLUDE_DIRS) $(PRIVATE_INCLUDE_DIRS)

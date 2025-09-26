@@ -4,5 +4,5 @@ LIB_OBJECTS += $(ARRAY_OBJECT)
 
 # Array build target
 $(ARRAY_OBJECT):
-	$(C) $(CFLAGS) -c $(ARRAY_INCLUDE)/array.c
+	$(C) $(CFLAGS) -c $(ARRAY_INCLUDE)/array.c $(PRIVATE_INCLUDE_DIRS)
 	cp $(ARRAY_INCLUDE)/array.h include/array.h

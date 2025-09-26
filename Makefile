@@ -6,6 +6,7 @@ TEST_DIR := test
 LIB := libfireside
 TESTS := test_fireside_lib
 TEST_INCLUDE_DIRS := include
+PRIVATE_INCLUDE_DIRS := -Isrc
 
 .PHONY: $(LIB).so $(LIB_OBJECTS) $(TESTS) $(TEST_OBJECTS) clean
 all: $(LIB).so
