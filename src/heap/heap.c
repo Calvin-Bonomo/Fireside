@@ -37,8 +37,9 @@ int heap_push(Heap *heap, void *data) {
     heap->data = newData;
   }
 
-  uint index = heap->count++;
-  uint parentIndex = (index - 1) / 2;
+  uint index = heap->count++,
+       parentIndex = (index - 1) / 2;
+  if (!copy(data, heap->data + index, sizeof(void *))) return -1;
   if (parentIndex >= index) return 0; // Heap was previously empty
 
   // Swap child and parent nodes until condition satisfied
