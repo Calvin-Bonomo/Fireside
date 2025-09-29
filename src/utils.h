@@ -6,7 +6,7 @@ typedef unsigned long ulong;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
 
-inline void *copy(void *src, void *dst, ulong n) {
+static inline void *copy(void *src, void *dst, ulong n) {
   if (!src || !dst) return (void *)0;
 
   char *srcCpy = src, *dstCpy = dst;
@@ -16,7 +16,7 @@ inline void *copy(void *src, void *dst, ulong n) {
   return dst;
 }
 
-inline int swap(void *p1, void *p2, ulong n) {
+static inline int swap(void *p1, void *p2, ulong n) {
   if (!p1 || !p2) return -1;
 
   char *pByte1 = p1, *pByte2 = p2;
@@ -28,7 +28,7 @@ inline int swap(void *p1, void *p2, ulong n) {
   return 0;
 }
 
-inline void *clear(void *p, ulong n) {
+static inline void *clear(void *p, ulong n) {
   if (!p) return NULL;
 
   for (ulong i = 0; i < n; i++) {
