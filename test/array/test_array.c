@@ -29,7 +29,7 @@ void test_array_free()
   unsigned long size = sizeof(int);
 
   assert(array_free(NULL) == -1);
-  array_init(&intArr, 5, size);
+  array_init(&intArr, count, size);
   assert(array_free(&intArr) == 0);
 }
 
