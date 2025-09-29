@@ -4,4 +4,4 @@ TEST_OBJECTS += $(LIST_TEST_OBJECT)
 
 # List test target
 $(LIST_TEST_OBJECT):
-	$(C) -c $(LIST_TEST_INCLUDE)/test_list.c $(TEST_INCLUDE_DIRS)
+	$(C) $(DEBUG_CFLAGS) -c $(LIST_TEST_INCLUDE)/test_list.c $(TEST_INCLUDE_DIRS)

@@ -1,7 +1,8 @@
 # Building and environment related variables
 C := gcc
 SRC_DIR := src
-CFLAGS := -Wall -Werror -Ofast
+CFLAGS := -Wall -Werror -Ofast -fPIC
+DEBUG_CFLAGS := -Wall -Werror -O0 -g -fPIC
 TEST_DIR := test
 LIB := libfireside
 TESTS := test_fireside_lib
@@ -21,9 +22,13 @@ TEST_INCLUDE_DIRS := $(addprefix -I,$(TEST_INCLUDE_DIRS))
 $(LIB).so: $(LIB_OBJECTS)
 	$(C) -shared $(CFLAGS) $? -o $@ $(ARG_INCLUDE_DIRS)
 
+# Build the shared library
+$(LIB)_debug.so: $(LIB_DEBUG_OBJECTS)
+	$(C) -shared $(DEBUG_CFLAGS) $? -o $@ $(ARG_INCLUDE_DIRS)
+
 # Build tests
-$(TESTS): $(LIB).so $(TEST_OBJECTS)
-	$(C) -pie -Wl,-rpath=. $(TEST_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside -Iinclude/ $(TEST_INCLUDE_DIRS)
+$(TESTS): $(LIB)_debug.so $(TEST_OBJECTS)
+	$(C) -pie -Wl,-rpath=. $(DEBUG_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside_debug -Iinclude/ $(TEST_INCLUDE_DIRS)
 	./$(TESTS)
 
 # Clean up

@@ -10,6 +10,7 @@ LIST_INCLUDE := $(SRC_DIR)/$(LIST_DIR)
 INCLUDE_DIRS += $(LIST_DIR)
 LIB_SUB_MAKES += $(LIST_INCLUDE)/Makefile
 
+# Heap related variables
 HEAP_DIR := heap
 HEAP_INCLUDE := $(SRC_DIR)/$(HEAP_DIR)
 INCLUDE_DIRS += $(HEAP_DIR)
