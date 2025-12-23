@@ -6,7 +6,7 @@
 typedef uint (*heapCompareFunc)(void *left, void *right);
 
 typedef struct {
-  void *data;
+  void **data;
   unsigned int count;
   unsigned int maxCount;
   heapCompareFunc compare;

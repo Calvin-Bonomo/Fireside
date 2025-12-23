@@ -39,12 +39,13 @@ int heap_push(Heap *heap, void *data) {
 
   uint index = heap->count++,
        parentIndex = (index - 1) / 2;
-  if (!copy(data, heap->data + index, sizeof(void *))) return -1;
-  if (parentIndex >= index) return 0; // Heap was previously empty
+
+  if (!copy(&data, heap->data + index, sizeof(void *))) return -1;
+  if (heap->count == 1) return 0; // Heap was previously empty
 
   // Swap child and parent nodes until condition satisfied
-  while (heap->compare(heap->data + index, heap->data + parentIndex) > 0) {
-    if (!swap(heap->data + index, heap->data + parentIndex, sizeof(void *))) return -1;
+  while (index > 0 && heap->compare(heap->data[parentIndex], heap->data[index]) > 0) {
+    if (swap(heap->data + index, heap->data + parentIndex, sizeof(void *)) < 0) return -1;
     index = parentIndex;
     parentIndex = (index - 1) / 2;
   }
