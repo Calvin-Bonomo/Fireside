@@ -2,8 +2,8 @@
 C := gcc
 SRC_DIR := src
 CFLAGS := -Wall -Werror -Ofast
-TEST_DIR := test
 LIB := libfireside
+TEST_DIR := tests
 TESTS := test_fireside_lib
 TEST_INCLUDE_DIRS := include
 
