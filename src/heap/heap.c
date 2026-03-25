@@ -27,7 +27,7 @@ int heap_push(Heap *heap, void *data) {
 
     void *newData = malloc(2 * heap->maxCount);
     if (!newData) return -1;
-    if (!copy(heap->data, newData, sizeof(void *) * heap->maxCount)) {
+    if (!copy(heap->data, newData, sizeof(void *) *heap->maxCount)) {
       free(newData);
       return -1;
     }
@@ -60,13 +60,13 @@ void *heap_pop(Heap *heap) {
   uint currentIndex = 0,
        replacementIndex = 0;
 
-  if (!copy(heap->data, oldRoot, sizeof(void *))) return NULL;
+  if (!copy(heap->data, &oldRoot, sizeof(void *))) return NULL;
   if (!copy(lastNode, heap->data, sizeof(void *))) return NULL;
   if (!clear(heap->data + (--heap->count), sizeof(void *))) return NULL;
 
   while (currentIndex < heap->count) {
-    if (heap->compare(heap->data + currentIndex, heap->data + currentIndex * 2 + 1)) replacementIndex = currentIndex * 2 + 1;
-    if (heap->compare(heap->data + currentIndex, heap->data + currentIndex * 2 + 2)) replacementIndex = currentIndex * 2 + 1;
+    if (heap->compare(heap->data[currentIndex], heap->data[currentIndex * 2 + 1])) replacementIndex = currentIndex * 2 + 1;
+    if (heap->compare(heap->data[currentIndex], heap->data[currentIndex * 2 + 2])) replacementIndex = currentIndex * 2 + 1;
 
     if (currentIndex == replacementIndex) break;
     if (!copy(heap->data + currentIndex, heap->data + replacementIndex, sizeof(void *))) return NULL;

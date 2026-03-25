@@ -6,6 +6,7 @@ typedef unsigned long ulong;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
 
+// Copies the data at src and copies it to dst
 static inline void *copy(void *src, void *dst, ulong n) {
   if (!src || !dst) return (void *)0;
 

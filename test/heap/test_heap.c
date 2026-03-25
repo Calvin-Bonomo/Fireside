@@ -15,6 +15,18 @@ uint validate_min_heap(Heap *heap) {
   return 1;
 }
 
+int get_lowest_value(int *arr, int arrSize) {
+  int lowest = ~(1 << 31), lowestIndex = -1, i;
+  for (i = 0; i < arrSize; i++) {
+    if (arr[i] < lowest) {
+      lowestIndex = i;
+      lowest = arrSize;
+    }
+  }
+
+  return lowestIndex;
+}
+
 // Testing functions
 void test_heap() {
   test_heap_init();
@@ -79,6 +91,23 @@ void test_heap_push() {
 }
 
 void test_heap_pop() {
+  Heap heap;
+  heap_init(&heap, HEAP_TEST_SIZE, minCompare);
+
+  int *heapData = malloc(HEAP_TEST_SIZE * sizeof(int));
+  for (int i = 0; i < HEAP_TEST_SIZE; i++) {
+    heapData[i] = rand();
+    assert(!heap_push(&heap, &heapData[i]));
+  }
+
+  int heapLowestIndex, *popped, i;
+  for (i = 0; i < HEAP_TEST_SIZE; i++) {
+    heapLowestIndex = get_lowest_value(heapData, HEAP_TEST_SIZE);
+    popped = (int *)heap_pop(&heap);
+
+    assert(*popped == heapData[heapLowestIndex]);
+    heapData[heapLowestIndex] = ~(1 << 31);
+  }
 }
 
 void test_heap_peek() {
