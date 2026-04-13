@@ -39,7 +39,7 @@ $(LIB)_debug.so: $(LIB_DEBUG_OBJECTS)
 	$(C) $(DEBUG_CFLAGS) -shared $? -o $@ -Iinclude
 
 # Build malloc preload library
-test_malloc.so: $(TEST_DIR)/preload/test_malloc.c
+test_malloc.so: preload/test_malloc.c
 	$(C) -shared -fPIC -o test_malloc.so $< -ldl
 
 # Build tests
