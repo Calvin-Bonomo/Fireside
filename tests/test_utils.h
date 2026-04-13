@@ -23,7 +23,7 @@ int malloc_should_fail = 0;
             tests_run,                            \
             msg                                   \
         );                                        \
-} while(0);
+} while(0)
 
 // Checks if `val == exp`
 // Note: `val == exp` must be a valid C statement
@@ -41,7 +41,7 @@ int malloc_should_fail = 0;
             tests_run,                            \
             msg                                   \
         );                                        \
-} while(0);
+} while(0)
 
 #define TEST_MALLOC_FAIL(val, exp, msg) do {      \
     ++tests_run;                                  \
@@ -60,7 +60,7 @@ int malloc_should_fail = 0;
             tests_run,                            \
             msg                                   \
         );                                        \
-} while(0);
+} while(0)
 
 #define END_TESTS fprintf(stderr, "\n===== %d/%d Tests Passed =====\n", tests_passed, tests_run);
 
