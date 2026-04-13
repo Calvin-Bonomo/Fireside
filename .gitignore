@@ -1,5 +1,5 @@
-// Ignore IDE specific directories
-.vscode/
+// Ignore LSP stuff
+compile_commands.json
 
 // Ignore build files
 *.o
