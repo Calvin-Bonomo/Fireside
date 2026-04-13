@@ -1,36 +1,52 @@
 # Building and environment related variables
 C := gcc
 SRC_DIR := src
-CFLAGS := -Wall -Werror -Ofast -fPIC
-DEBUG_CFLAGS := -Wall -Werror -O0 -g -fPIC
+CFLAGS := -Wall -Werror -Ofast -fPIC -DNDEBUG
+DEBUG_CFLAGS := -Wall -Werror -O0 -g -fPIC 
 TEST_DIR := tests
 LIB := libfireside
 TESTS := test_fireside_lib
-TEST_INCLUDE_DIRS := include
-PRIVATE_INCLUDE_DIRS := -Isrc
 
-.PHONY: $(LIB).so $(LIB_OBJECTS) $(TESTS) $(TEST_OBJECTS) clean
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+LIB_OBJECTS = $(patsubst $(SRC_DIR)/%.c, %.o, $(SRC_FILES))
+
+LIB_DEBUG_OBJECTS = $(patsubst $(SRC_DIR)/%.c, %_debug.o, $(SRC_FILES))
+
+TEST_SRC_FILES = $(wildcard $(TEST_DIR)/*.c)
+TEST_OBJECTS = $(patsubst $(TEST_DIR)/%.c, %.o, $(TEST_SRC_FILES))
+
+
+.PHONY: all clean
+
 all: $(LIB).so
 test: $(TESTS)
 
-# Including sub makefiles
-include $(SRC_DIR)/Makefile $(TEST_DIR)/Makefile
-ARG_INCLUDE_DIRS := $(addprefix -I$(SRC_DIR)/,$(INCLUDE_DIRS))
-TEST_INCLUDE_DIRS := $(addprefix -I,$(TEST_INCLUDE_DIRS))
+%.o: $(SRC_DIR)/%.c
+	$(C) $(CFLAGS) -c $< -o $@ -Iinclude
+
+%_debug.o: $(SRC_DIR)/%.c
+	$(C) $(DEBUG_CFLAGS) -c $< -o $@ -Iinclude
+
+%.o: $(TEST_DIR)/%.c
+	$(C) $(DEBUG_CFLAGS) -Wl,--wrap=malloc -c $< -o $@ -Iinclude -Itest
 
 # Build the shared library
 $(LIB).so: $(LIB_OBJECTS)
-	$(C) -shared $(CFLAGS) $? -o $@ $(ARG_INCLUDE_DIRS)
+	$(C) $(CFLAGS) -shared $< -o $@ -Iinclude
 
-# Build the shared library
+# Build the shared library for debug
 $(LIB)_debug.so: $(LIB_DEBUG_OBJECTS)
-	$(C) -shared $(DEBUG_CFLAGS) $? -o $@ $(ARG_INCLUDE_DIRS)
+	$(C) $(DEBUG_CFLAGS) -shared $? -o $@ -Iinclude
+
+# Build malloc preload library
+test_malloc.so: $(TEST_DIR)/preload/test_malloc.c
+	$(C) -shared -fPIC -o test_malloc.so $< -ldl
 
 # Build tests
-$(TESTS): $(LIB)_debug.so $(TEST_OBJECTS)
-	$(C) -pie -Wl,-rpath=. $(DEBUG_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside_debug -Iinclude/ $(TEST_INCLUDE_DIRS)
-	./$(TESTS)
+$(TESTS): $(LIB)_debug.so test_malloc.so $(TEST_OBJECTS)
+	$(C) -pie -Wl,-rpath=. -rdynamic $(DEBUG_CFLAGS) $(TEST_OBJECTS) -o $@ -L. -lfireside_debug -Iinclude
+	LD_PRELOAD=./test_malloc.so ./$(TESTS)
 
 # Clean up
 clean:
-	rm -rf *.o *.so $(TESTS) ./include/*
+	rm -rf *.o *.so $(TESTS)
