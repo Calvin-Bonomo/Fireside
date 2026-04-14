@@ -12,9 +12,9 @@ void test_array()
     array arr;
     
     // Test array_init
-    TEST_MALLOC_FAIL(array_init(&arr, TEST_ARRAY_SIZE, sizeof(int)), 1, "array init fail");
+    TEST_MALLOC_FAIL(array_init(&arr, TEST_ARRAY_SIZE, sizeof(int)), FIRESIDE_FAIL, "array init fail");
 
-    TEST_EQ(array_init(&arr, TEST_ARRAY_SIZE, sizeof(int)), 0, "array init success");
+    TEST_EQ(array_init(&arr, TEST_ARRAY_SIZE, sizeof(int)), FIRESIDE_OK, "array init success");
 
     // Test array set
     for (uint i = 0; i < TEST_ARRAY_SIZE; i++)

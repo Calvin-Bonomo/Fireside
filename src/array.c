@@ -13,11 +13,11 @@ int array_init(array *arr, uint n, uint s) {
     clear(arr, sizeof(array));
 
     if (!(arr->data = malloc(n * s)))
-        return 1;
+        return FIRESIDE_FAIL;
     arr->elementSize = s;
     arr->count = n;
 
-    return 0;
+    return FIRESIDE_OK;
 }
 
 void array_free(array *arr) {
